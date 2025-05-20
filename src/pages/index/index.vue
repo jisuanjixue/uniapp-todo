@@ -257,9 +257,32 @@ const clearCompleted = () => {
 
 // Navigate to edit page
 const navigateToEdit = (id: string) => {
+  console.log('Navigating to edit page with ID:', id);
+
+  // 确保ID不为空
+  if (!id) {
+    console.error('Cannot navigate to edit page: ID is empty');
+    uni.showToast({
+      title: 'Error: Invalid task ID',
+      icon: 'none'
+    });
+    return;
+  }
+
   showDetailsModal.value = false;
+
+  // 使用encodeURIComponent确保ID被正确编码
+  const url = `/pages/edit/edit?id=${encodeURIComponent(id)}`;
+  console.log('Navigation URL:', url);
+
   uni.navigateTo({
-    url: `/pages/edit/edit?id=${id}`
+    url,
+    success: () => {
+      console.log('Navigation successful');
+    },
+    fail: (err) => {
+      console.error('Navigation failed:', err);
+    }
   });
 };
 
